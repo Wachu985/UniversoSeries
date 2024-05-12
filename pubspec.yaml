@@ -11,19 +11,25 @@ dependencies:
   card_swiper: ^3.0.1
   dio: ^5.4.3+1
   equatable: ^2.0.5
-  flick_video_player: ^0.7.0
+  flick_video_player: ^0.8.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.5
   flutter_dotenv: ^5.1.0
+  flutter_localization: ^0.2.0
   flutter_staggered_grid_view: ^0.7.0
   flutter_svg: ^2.0.10+1
+  formz: ^0.7.0
   go_router: ^14.0.2
+  google_sign_in: ^6.2.1
+  intl: null
   isar: ^3.1.0+1
   isar_flutter_libs: ^3.1.0+1
+  particles_fly: ^0.0.8
   responsive_framework: ^1.4.0
   shared_preferences: ^2.2.3
   supabase_flutter: ^2.5.2
+  toastification: ^2.0.0
   url_launcher: ^6.2.6
   video_player: ^2.8.6
   visibility_detector: ^0.4.0+2
@@ -40,3 +46,7 @@ flutter:
   assets:
     - assets/
     - .env
+flutter_intl:
+  enabled: true
+  class_name: S
+  main_locale: en,es

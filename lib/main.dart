@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:multi_player/core/environment/environment_config.dart';
-import 'package:multi_player/core/router/app_router.dart';
-import 'package:multi_player/core/shared_preferences/shared_preferences_singlenton.dart';
-import 'package:multi_player/core/theme/app_theme.dart';
-import 'package:multi_player/infrastructure/datasources/isar_local_storage_datasource.dart';
-// import 'package:multi_player/infrastructure/datasources/media_dio_datasource.dart';
-import 'package:multi_player/infrastructure/datasources/media_suprabase_datasource.dart';
-import 'package:multi_player/infrastructure/repositories/local_storage_repository_impl.dart';
-import 'package:multi_player/infrastructure/repositories/media_repository_impl.dart';
-import 'package:multi_player/presentation/blocs/media/media_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'generated/l10n.dart';
 
-import 'presentation/blocs/theme/theme_bloc.dart';
+import 'src/core/core.dart';
+import 'src/infrastructure/infrastructure.dart';
+import 'src/presentation/blocs/auth/auth_bloc.dart' as authbloc;
+import "src/presentation/blocs/media/media_bloc.dart";
+import 'src/presentation/blocs/theme/theme_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +41,15 @@ void main() async {
         lazy: false,
       ),
       BlocProvider(
+        create: (_) => authbloc.AuthBloc(
+          repository: AuthRepositoryImpl(
+            datasource: AuthSupabaseDatasource(),
+          ),
+        )..add(
+            authbloc.AuthEvent.checkSesion(),
+          ),
+      ),
+      BlocProvider(
         create: (_) => ThemeBloc()..add(ThemeEvent.loadTheme()),
         lazy: false,
       ),
@@ -57,8 +63,33 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      builder: (context, child) => ResponsiveBreakpoints.builder(
+    return BlocListener<authbloc.AuthBloc, authbloc.AuthState>(
+      listener: (context, state) {
+        appRouter.refresh();
+        // We are refreshing the sole instance of `GoRouter`
+      },
+      child: MaterialApp.router(
+        title: "UniversoSeries",
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        builder: responsiveBuilder,
+        debugShowCheckedModeBanner: false,
+        routerConfig: appRouter,
+        theme: AppTheme(
+          darkMode: context.select((ThemeBloc bloc) => bloc.state.darkMode),
+          selectedColor:
+              context.select((ThemeBloc bloc) => bloc.state.selectedColor),
+        ).getTheme(),
+      ),
+    );
+  }
+
+  Widget responsiveBuilder(context, child) => ResponsiveBreakpoints.builder(
         child: Builder(
           builder: (context) {
             return MaxWidthBox(
@@ -84,14 +115,5 @@ class MainApp extends StatelessWidget {
           const Breakpoint(start: 801, end: 1920, name: DESKTOP),
           const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
         ],
-      ),
-      debugShowCheckedModeBanner: false,
-      routerConfig: appRouter,
-      theme: AppTheme(
-        darkMode: context.select((ThemeBloc bloc) => bloc.state.darkMode),
-        selectedColor:
-            context.select((ThemeBloc bloc) => bloc.state.selectedColor),
-      ).getTheme(),
-    );
-  }
+      );
 }
