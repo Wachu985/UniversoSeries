@@ -60,17 +60,6 @@ class SettingsScreen extends StatelessWidget {
                   await launchUrl(Uri.parse("https://t.me/Wachu985"));
                 },
               ),
-              InfoWidget(
-                title: "UniversoSeries",
-                subtitle: textTraslate.settingsGithubRepository,
-                icon: Icons.code_rounded,
-                ontap: () async {
-                  await launchUrl(
-                    Uri.parse(
-                        "https://github.com/Wachu985/simple_force_4g_app"),
-                  );
-                },
-              ),
               Padding(
                 padding: const EdgeInsets.only(top: 15.0, left: 14, right: 14),
                 child: Card(
