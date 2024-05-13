@@ -27,7 +27,7 @@ class SharedPreferencesSinglenton {
 
   set selectedColor(int value) => _prefs?.setInt("selectedColor", value);
 
-  int get selectedLanguaje => _prefs?.getInt("selectedLanguaje") ?? 1;
+  int get selectedLanguaje => _prefs?.getInt("selectedLanguaje") ?? 0;
 
   set selectedLanguaje(int value) => _prefs?.setInt("selectedLanguaje", value);
 }
