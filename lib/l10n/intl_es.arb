@@ -74,6 +74,10 @@
     "@settingsLanguageTitle": {},
     "settingsLanguageSubtitle": "Cambie el lenguaje de la aplicación.",
     "@settingsLanguageSubtitle": {},
+    "settingsServerTitle": "Servidores",
+    "@settingsServerTitle": {},
+    "settingsServerSubtitle": "Cambie el servidor de la aplicación.",
+    "@settingsServerSubtitle": {},
     "descriptionSeeSeasons": "Ver Temporadas",
     "@descriptionSeeSeasons": {},
     "homeText1": "Últimas Series",
@@ -111,5 +115,9 @@
     "emailError": "Correo no valido",
     "@emailError": {},
     "passwordError": "Minimo 6 caracteres",
-    "@passwordError": {}
+    "@passwordError": {},
+    "capsTitle": "Ha ocurrido un error",
+    "@capsTitle": {},
+    "capsSubtitle": "El servidor parece estar caido.",
+    "@capsSubtitle": {}
 }

@@ -74,6 +74,10 @@
     "@settingsLanguageTitle": {},
     "settingsLanguageSubtitle": "Change the application language.",
     "@settingsLanguageSubtitle": {},
+    "settingsServerTitle": "Servers",
+    "@settingsServerTitle": {},
+    "settingsServerSubtitle": "Change the application servers.",
+    "@settingsServerSubtitle": {},
     "descriptionSeeSeasons": "See Seasons",
     "@descriptionSeeSeasons": {},
     "homeText1": "Latest Series",
@@ -111,5 +115,9 @@
     "emailError": "Invalid email",
     "@emailError": {},
     "passwordError": "Minimum 6 characters",
-    "@passwordError": {}
+    "@passwordError": {},
+    "capsTitle": "An error has occurred.",
+    "@capsTitle": {},
+    "capsSubtitle": "The server seems to be down.",
+    "@capsSubtitle": {}
 }
