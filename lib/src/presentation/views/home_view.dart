@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,12 +17,12 @@ class HomeView extends StatelessWidget {
     final state = context.watch<MediaBloc>().state;
     final textTraslate = S.of(context);
     final TextTheme textTheme = Theme.of(context).textTheme;
-    if (state.populateMedia.isEmpty || state.lastMedia.isEmpty) {
-      return ErrorCustomWidget(text: S.current.mediaViewText1);
+    if (state.mediaStatus == MediaStatus.loading) {
+      return const Center(child: CircularProgressIndicator(strokeWidth: 2));
     } else if (state.mediaStatus == MediaStatus.error) {
       return ErrorCustomWidget(text: S.current.mediaViewText2);
-    } else if (state.mediaStatus == MediaStatus.loading) {
-      return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+    } else if (state.populateMedia.isEmpty || state.lastMedia.isEmpty) {
+      return ErrorCustomWidget(text: S.current.mediaViewText1);
     } else {
       return SingleChildScrollView(
         child: Column(
@@ -130,9 +131,12 @@ class SwiperMedia extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(25),
-            child: Image.network(
-              media.poster,
+            child: CachedNetworkImage(
+              imageUrl: media.poster,
               fit: BoxFit.cover,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  Image.asset('assets/bottle-loader.gif', fit: BoxFit.cover),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
           ),
           Container(

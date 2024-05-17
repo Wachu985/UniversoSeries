@@ -23,8 +23,13 @@ const TemporadaEntitySchema = Schema(
       name: r'name',
       type: IsarType.string,
     ),
-    r'url': PropertySchema(
+    r'subtitle': PropertySchema(
       id: 2,
+      name: r'subtitle',
+      type: IsarType.stringList,
+    ),
+    r'url': PropertySchema(
+      id: 3,
       name: r'url',
       type: IsarType.string,
     )
@@ -60,6 +65,18 @@ int _temporadaEntityEstimateSize(
     }
   }
   {
+    final list = object.subtitle;
+    if (list != null) {
+      bytesCount += 3 + list.length * 3;
+      {
+        for (var i = 0; i < list.length; i++) {
+          final value = list[i];
+          bytesCount += value.length * 3;
+        }
+      }
+    }
+  }
+  {
     final value = object.url;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -76,7 +93,8 @@ void _temporadaEntitySerialize(
 ) {
   writer.writeStringList(offsets[0], object.caps);
   writer.writeString(offsets[1], object.name);
-  writer.writeString(offsets[2], object.url);
+  writer.writeStringList(offsets[2], object.subtitle);
+  writer.writeString(offsets[3], object.url);
 }
 
 TemporadaEntity _temporadaEntityDeserialize(
@@ -88,7 +106,8 @@ TemporadaEntity _temporadaEntityDeserialize(
   final object = TemporadaEntity(
     caps: reader.readStringList(offsets[0]),
     name: reader.readStringOrNull(offsets[1]),
-    url: reader.readStringOrNull(offsets[2]),
+    subtitle: reader.readStringList(offsets[2]),
+    url: reader.readStringOrNull(offsets[3]),
   );
   return object;
 }
@@ -105,6 +124,8 @@ P _temporadaEntityDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
+      return (reader.readStringList(offset)) as P;
+    case 3:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -507,6 +528,249 @@ extension TemporadaEntityQueryFilter
         property: r'name',
         value: '',
       ));
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'subtitle',
+      ));
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'subtitle',
+      ));
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleElementEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'subtitle',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleElementGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'subtitle',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleElementLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'subtitle',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleElementBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'subtitle',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleElementStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'subtitle',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleElementEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'subtitle',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleElementContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'subtitle',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleElementMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'subtitle',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'subtitle',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'subtitle',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'subtitle',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'subtitle',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'subtitle',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'subtitle',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'subtitle',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<TemporadaEntity, TemporadaEntity, QAfterFilterCondition>
+      subtitleLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'subtitle',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
     });
   }
 

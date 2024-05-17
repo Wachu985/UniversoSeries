@@ -1,56 +1,68 @@
-import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
-import 'package:visibility_detector/visibility_detector.dart';
+import 'package:go_router/go_router.dart';
+import 'package:media_kit/media_kit.dart';
+import 'package:media_kit_video/media_kit_video.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   static const String screenName = "VideoPlayerScreen";
   final String videoUri;
-  const VideoPlayerScreen({super.key, required this.videoUri});
+  final String subtitleUri;
+  const VideoPlayerScreen({
+    super.key,
+    required this.videoUri,
+    required this.subtitleUri,
+  });
 
   @override
   State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
 }
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  late FlickManager flickManager;
+  late final player = Player();
+  // Create a [VideoController] to handle video output from [Player].
+  late final controller = VideoController(player);
   @override
   void initState() {
+    player.open(Media(widget.videoUri));
+    player.setSubtitleTrack(SubtitleTrack.uri(widget.subtitleUri,
+        language: "Spanish", title: "es"));
     super.initState();
-    flickManager = FlickManager(
-        videoPlayerController: VideoPlayerController.networkUrl(
-      Uri.parse(widget.videoUri),
-    ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return VisibilityDetector(
-      key: ObjectKey(flickManager),
-      onVisibilityChanged: (visibility) {
-        if (visibility.visibleFraction == 0 && mounted) {
-          flickManager.flickControlManager?.autoPause();
-        } else if (visibility.visibleFraction == 1) {
-          flickManager.flickControlManager?.autoResume();
-        }
-      },
-      child: FlickVideoPlayer(
-        flickManager: flickManager,
-        flickVideoWithControls: const FlickVideoWithControls(
-          closedCaptionTextStyle: TextStyle(fontSize: 8),
-          controls: FlickPortraitControls(),
-          videoFit: BoxFit.contain,
-        ),
-        flickVideoWithControlsFullscreen: const FlickVideoWithControls(
-          controls: FlickLandscapeControls(),
+    final Size size = MediaQuery.of(context).size;
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Center(
+              child: SizedBox(
+                width: size.width,
+                height: size.height,
+                // Use [Video] widget to display video output.
+                child: Video(controller: controller),
+              ),
+            ),
+            Positioned(
+              top: 10,
+              left: 10,
+              child: IconButton(
+                  onPressed: () => context.pop(),
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Colors.white,
+                  )),
+            )
+          ],
         ),
       ),
     );
   }
 
   @override
-  void dispose() {
-    flickManager.dispose();
+  void dispose() async {
+    await player.dispose();
     super.dispose();
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -30,7 +31,16 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
     emit(state.copyWith(mediaStatus: MediaStatus.loading));
     try {
       final response = await repository.findAllMedia();
-      emit(state.copyWith(mediaStatus: MediaStatus.success, series: response));
+      final populate = await repository.findPopulateMedia(10, 'populate');
+      final last = await repository.findLastMedia(10, 'created_at');
+      emit(
+        state.copyWith(
+          mediaStatus: MediaStatus.success,
+          series: response,
+          lastMedia: last,
+          populateMedia: populate,
+        ),
+      );
     } catch (e) {
       emit(state.copyWith(mediaStatus: MediaStatus.error));
     }
@@ -90,6 +100,20 @@ class MediaBloc extends Bloc<MediaEvent, MediaState> {
           mediaStatus: MediaStatus.success, lastMedia: response));
     } catch (e) {
       emit(state.copyWith(mediaStatus: MediaStatus.error));
+    }
+  }
+
+  Future<bool> checkStatus(String url) async {
+    final dio = Dio(BaseOptions(
+        sendTimeout: const Duration(seconds: 3),
+        connectTimeout: const Duration(seconds: 3),
+        receiveTimeout: const Duration(seconds: 3)));
+    try {
+      final response = await dio.get(url);
+      return response.statusCode == 200 &&
+          response.realUri.authority != "oops.uclv.edu.cu";
+    } catch (e) {
+      return false;
     }
   }
 }

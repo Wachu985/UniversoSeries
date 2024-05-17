@@ -30,4 +30,8 @@ class SharedPreferencesSinglenton {
   int get selectedLanguaje => _prefs?.getInt("selectedLanguaje") ?? 0;
 
   set selectedLanguaje(int value) => _prefs?.setInt("selectedLanguaje", value);
+
+  int get selectedServer => _prefs?.getInt("selectedServer") ?? 0;
+
+  set selectedServer(int value) => _prefs?.setInt("selectedServer", value);
 }

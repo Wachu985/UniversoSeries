@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_player/src/presentation/blocs/auth/auth_bloc.dart';
+import 'package:multi_player/src/presentation/blocs/theme/theme_bloc.dart';
 import 'package:multi_player/src/presentation/screens/auth/signin_screen.dart';
 import 'package:multi_player/src/presentation/screens/auth/signup_screen.dart';
 import 'package:multi_player/src/presentation/screens/media/caps_screen.dart';
@@ -94,19 +95,40 @@ final appRouter = GoRouter(
                   },
                   routes: [
                     GoRoute(
-                      path: "video/:uri",
+                      path: "video/:uri/:subtitle",
                       name: VideoPlayerScreen.screenName,
-                      pageBuilder: (context, state) {
+                      builder: (context, state) {
                         final videoUri = state.pathParameters['uri'] ?? 'no-id';
-                        return buildPageWithDefaultTransition(
-                          context: context,
-                          state: state,
-                          child: VideoPlayerScreen(
-                              videoUri: videoUri.replaceAll("*9", "/")
-                              // .replaceAll(" ", "%20"),
-                              ),
-                        );
+                        final subtitle =
+                            state.pathParameters['subtitle'] ?? 'no-id';
+                        final servers =
+                            context.read<ThemeBloc>().state.selectedServer;
+                        return VideoPlayerScreen(
+                            videoUri: servers + videoUri.replaceAll("*9", "/"),
+                            subtitleUri:
+                                servers + subtitle.replaceAll("*9", "/")
+                            // .replaceAll(" ", "%20"),
+                            );
                       },
+                      // pageBuilder: (context, state) {
+                      //   final videoUri = state.pathParameters['uri'] ?? 'no-id';
+                      //   final subtitle =
+                      //       state.pathParameters['subtitle'] ?? 'no-id';
+                      //   final servers =
+                      //       context.read<ThemeBloc>().state.selectedServer;
+
+                      //   return buildPageWithDefaultTransition(
+                      //     context: context,
+                      //     state: state,
+                      // child: VideoPlayerScreen(
+                      //     videoUri:
+                      //         servers + videoUri.replaceAll("*9", "/"),
+                      //     subtitleUri:
+                      //         servers + subtitle.replaceAll("*9", "/")
+                      //     // .replaceAll(" ", "%20"),
+                      //     ),
+                      //   );
+                      // },
                     )
                   ],
                 ),

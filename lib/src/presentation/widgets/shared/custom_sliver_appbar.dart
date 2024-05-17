@@ -1,4 +1,4 @@
-import 'package:animate_do/animate_do.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -42,7 +42,7 @@ class CustomSliverAppbar extends StatelessWidget {
             children: [
               Text(
                 serieSelected.name,
-                style: const TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20, color: Colors.white),
                 textAlign: TextAlign.start,
               ),
               const Spacer(),
@@ -50,19 +50,22 @@ class CustomSliverAppbar extends StatelessWidget {
                 Icons.star_half_rounded,
                 color: Colors.amber,
               ),
-              Text("${serieSelected.populate}")
+              Text(
+                "${serieSelected.populate}",
+                style: const TextStyle(color: Colors.white),
+              )
             ],
           ),
           background: Stack(
             children: [
               SizedBox.expand(
-                child: Image.network(
-                  serieSelected.portada,
+                child: CachedNetworkImage(
+                  imageUrl: serieSelected.portada,
                   fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress != null) return const SizedBox();
-                    return FadeIn(child: child);
-                  },
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      Image.asset('assets/bottle-loader.gif',
+                          fit: BoxFit.cover),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
               const _GradientBox(

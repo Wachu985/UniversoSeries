@@ -13,7 +13,14 @@ class SerieMapper {
         trailer: model.trailer,
         updatedAt: model.updatedAt,
         temporadas: model.temporadas
-            .map((e) => TemporadaEntity(name: e.name, url: e.url, caps: e.caps))
+            .map(
+              (e) => TemporadaEntity(
+                name: e.name,
+                url: e.url,
+                caps: e.caps,
+                subtitle: e.subtitles,
+              ),
+            )
             .toList(),
       );
 }

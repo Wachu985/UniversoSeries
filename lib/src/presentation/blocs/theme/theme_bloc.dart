@@ -13,11 +13,16 @@ part 'theme_state.dart';
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   final _preferences = SharedPreferencesSinglenton();
   final List<String> _listLanguaje = ["es", "en"];
+  final List<String> _listServers = [
+    "https://visuales.uclv.cu/",
+    "https://media.uo.edu.cu/"
+  ];
   ThemeBloc() : super(ThemeState.initialState()) {
     on<ToogleDarkMode>(_toogleDarkMode);
     on<LoadTheme>(_loadTheme);
     on<SwitchColor>(_switchColor);
     on<SwitchLanguaje>(_switchLanguaje);
+    on<SwitchServer>(_switchServer);
   }
 
   FutureOr<void> _toogleDarkMode(
@@ -28,12 +33,15 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   FutureOr<void> _loadTheme(LoadTheme event, Emitter<ThemeState> emit) {
     final languaje = _preferences.selectedLanguaje;
+    final selectedServer = _preferences.selectedServer;
     S.load(Locale(_listLanguaje[languaje]));
     emit(
       state.copyWith(
         darkMode: _preferences.darkMode,
         selectedColor: _preferences.selectedColor,
         selectedLanguaje: languaje,
+        selectedServer: _listServers[selectedServer],
+        selectedServerInt: selectedServer,
       ),
     );
   }
@@ -48,5 +56,13 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     S.load(Locale(_listLanguaje[event.languaje]));
     _preferences.selectedLanguaje = event.languaje;
     emit(state.copyWith(selectedLanguaje: event.languaje));
+  }
+
+  FutureOr<void> _switchServer(SwitchServer event, Emitter<ThemeState> emit) {
+    _preferences.selectedServer = event.server;
+    emit(state.copyWith(
+      selectedServer: _listServers[event.server],
+      selectedServerInt: event.server,
+    ));
   }
 }

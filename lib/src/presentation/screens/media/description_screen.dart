@@ -1,4 +1,4 @@
-import 'package:animate_do/animate_do.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -48,14 +48,19 @@ class _MediaDetails extends StatelessWidget {
                 // * Imagen
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: Image.network(
-                    serieSelected.poster,
+                  child: CachedNetworkImage(
+                    imageUrl: serieSelected.poster,
                     width: size.width * 0.3,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      return FadeIn(child: child);
-                    },
+                    fit: BoxFit.cover,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) => Image.asset(
+                            'assets/bottle-loader.gif',
+                            fit: BoxFit.cover),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
                 ),
+
                 const SizedBox(width: 10),
                 // * Descripcion
                 SizedBox(

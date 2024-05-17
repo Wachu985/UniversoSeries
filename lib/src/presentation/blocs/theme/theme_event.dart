@@ -7,6 +7,8 @@ sealed class ThemeEvent {
       SwitchColor(color: color);
   factory ThemeEvent.switchLanguaje({required int languaje}) =>
       SwitchLanguaje(languaje: languaje);
+  factory ThemeEvent.switchServer({required int server}) =>
+      SwitchServer(server: server);
 }
 
 class LoadTheme implements ThemeEvent {}
@@ -23,4 +25,10 @@ class SwitchLanguaje implements ThemeEvent {
   final int languaje;
 
   SwitchLanguaje({required this.languaje});
+}
+
+class SwitchServer implements ThemeEvent {
+  final int server;
+
+  SwitchServer({required this.server});
 }

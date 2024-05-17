@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 // ignore: depend_on_referenced_packages
@@ -15,6 +16,7 @@ import 'src/presentation/blocs/theme/theme_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MediaKit.ensureInitialized();
   final prefs = SharedPreferencesSinglenton();
   await prefs.initPrefs();
   await dotenv.load(fileName: ".env");

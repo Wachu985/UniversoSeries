@@ -24,6 +24,10 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accessTokenNotFound":
             MessageLookupByLibrary.simpleMessage("Access token not found."),
+        "capsSubtitle": MessageLookupByLibrary.simpleMessage(
+            "The server seems to be down."),
+        "capsTitle":
+            MessageLookupByLibrary.simpleMessage("An error has occurred."),
         "descriptionSeeSeasons":
             MessageLookupByLibrary.simpleMessage("See Seasons"),
         "emailError": MessageLookupByLibrary.simpleMessage("Invalid email"),
@@ -75,6 +79,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "Change the application language."),
         "settingsLanguageTitle":
             MessageLookupByLibrary.simpleMessage("Language"),
+        "settingsServerSubtitle": MessageLookupByLibrary.simpleMessage(
+            "Change the application servers."),
+        "settingsServerTitle": MessageLookupByLibrary.simpleMessage("Servers"),
         "settingsToastDescription":
             MessageLookupByLibrary.simpleMessage("Come back soon."),
         "settingsToastTitle":

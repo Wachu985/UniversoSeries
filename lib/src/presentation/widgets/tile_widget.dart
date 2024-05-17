@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class Tile extends StatelessWidget {
@@ -42,9 +43,12 @@ class Tile extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.network(
-                urlImage,
+              child: CachedNetworkImage(
+                imageUrl: urlImage,
                 fit: BoxFit.cover,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    Image.asset('assets/bottle-loader.gif', fit: BoxFit.cover),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
             Container(

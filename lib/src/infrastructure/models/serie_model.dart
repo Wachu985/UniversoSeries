@@ -63,22 +63,26 @@ class TemporadaModel {
   final String name;
   final String url;
   final List<String> caps;
+  final List<String> subtitles;
 
   TemporadaModel({
     required this.name,
     required this.url,
     required this.caps,
+    required this.subtitles,
   });
 
   factory TemporadaModel.fromJson(Map<String, dynamic> json) => TemporadaModel(
         name: json["name"],
         url: json["url"],
         caps: List<String>.from(json["caps"].map((x) => x)),
+        subtitles: List<String>.from(json["subtitles"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "name": name,
         "url": url,
         "caps": List<dynamic>.from(caps.map((x) => x)),
+        "subtitles": List<dynamic>.from(subtitles.map((x) => x)),
       };
 }

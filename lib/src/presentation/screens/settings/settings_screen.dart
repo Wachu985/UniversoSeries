@@ -26,6 +26,7 @@ class SettingsScreen extends StatelessWidget {
       Colors.deepOrange
     ];
     const List<String> languajeList = ["Español-España", "English-USA"];
+    const List<String> listServers = ["Visuales-UCLV", "Media-UO"];
     final TextTheme textTheme = Theme.of(context).textTheme;
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
@@ -74,6 +75,29 @@ class SettingsScreen extends StatelessWidget {
                           .read<ThemeBloc>()
                           .add(ThemeEvent.toogleDarkMode());
                     },
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15, left: 14, right: 14),
+                child: Card(
+                  elevation: 2,
+                  child: ExpansionTile(
+                    title: Text(textTraslate.settingsServerTitle),
+                    subtitle: Text(textTraslate.settingsServerSubtitle),
+                    children: [
+                      ...listServers.map(
+                        (servers) => RadioListTile(
+                          title: Text(servers),
+                          value: listServers.indexOf(servers),
+                          groupValue: context.select(
+                              (ThemeBloc bloc) => bloc.state.selectedServerInt),
+                          onChanged: (value) => context.read<ThemeBloc>().add(
+                                ThemeEvent.switchServer(server: value ?? 0),
+                              ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

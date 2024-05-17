@@ -420,6 +420,26 @@ class S {
     );
   }
 
+  /// `Servers`
+  String get settingsServerTitle {
+    return Intl.message(
+      'Servers',
+      name: 'settingsServerTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change the application servers.`
+  String get settingsServerSubtitle {
+    return Intl.message(
+      'Change the application servers.',
+      name: 'settingsServerSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `See Seasons`
   String get descriptionSeeSeasons {
     return Intl.message(
@@ -605,6 +625,26 @@ class S {
     return Intl.message(
       'Minimum 6 characters',
       name: 'passwordError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An error has occurred.`
+  String get capsTitle {
+    return Intl.message(
+      'An error has occurred.',
+      name: 'capsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The server seems to be down.`
+  String get capsSubtitle {
+    return Intl.message(
+      'The server seems to be down.',
+      name: 'capsSubtitle',
       desc: '',
       args: [],
     );
