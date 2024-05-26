@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../domain/domain.dart';
 import '../../../infrastructure/infrastructure.dart';
@@ -52,6 +53,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             status: AuthStatus.success, user: response, isLoged: true));
         await Future.delayed(const Duration(seconds: 1));
         emit(state.copyWith(status: AuthStatus.initial));
+      } on AuthException catch (authException) {
+        emit(state.copyWith(
+          status: AuthStatus.error,
+          isLoged: false,
+          errorText: authException.message,
+        ));
+        await Future.delayed(const Duration(seconds: 1));
+        emit(state.copyWith(status: AuthStatus.initial));
       } catch (e) {
         emit(
           state.copyWith(
@@ -80,6 +89,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await repository.registerWithEmail(
             email: state.email.value, password: state.password.value);
         emit(state.copyWith(status: AuthStatus.success, isLoged: false));
+        await Future.delayed(const Duration(seconds: 1));
+        emit(state.copyWith(status: AuthStatus.initial));
+      } on AuthException catch (authException) {
+        emit(state.copyWith(
+          status: AuthStatus.error,
+          isLoged: false,
+          errorText: authException.message,
+        ));
         await Future.delayed(const Duration(seconds: 1));
         emit(state.copyWith(status: AuthStatus.initial));
       } catch (e) {

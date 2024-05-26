@@ -159,7 +159,7 @@ final appRouter = GoRouter(
     final AuthStatus status = context.read<AuthBloc>().state.status;
     // final bool loggingIn = state.matchedLocation == '/signIn';
 
-    if (state.fullPath == "/signUp") {
+    if (state.fullPath == "/signUp" && !loggedIn) {
       return '/signUp';
     } else if (!loggedIn) {
       return '/signIn';

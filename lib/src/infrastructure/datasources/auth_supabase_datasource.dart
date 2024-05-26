@@ -1,3 +1,4 @@
+import 'package:multi_player/src/core/environment/environment.dart';
 import 'package:multi_player/src/domain/domain.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -34,6 +35,11 @@ class AuthSupabaseDatasource implements AuthDatasource {
     );
     final User? user = response.user;
     if (user == null) throw Exception(S.current.userNotFound);
+    if (user.userMetadata != null) {
+      if (user.userMetadata!.isEmpty) {
+        throw Exception(S.current.registerExistError);
+      }
+    }
     return UserMapper.userModelToUserEntity(user);
   }
 
@@ -58,7 +64,10 @@ class AuthSupabaseDatasource implements AuthDatasource {
   @override
   Future<UserEntity> loginWithGoogle() async {
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        clientId: EnvironmentConfig.androidClientId,
+        serverClientId: EnvironmentConfig.webClientId,
+      );
       final googleUser = await googleSignIn.signIn();
       final googleAuth = await googleUser!.authentication;
       final accessToken = googleAuth.accessToken;

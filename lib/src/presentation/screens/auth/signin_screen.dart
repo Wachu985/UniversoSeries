@@ -119,8 +119,12 @@ class TextContainerWidget extends StatelessWidget {
               ElevatedButton(
                 onPressed: state.status == AuthStatus.loading
                     ? null
-                    : () => context.read<AuthBloc>().add(AuthEvent.signIn()),
-                style: ElevatedButton.styleFrom(fixedSize: const Size(240, 45)),
+                    : () {
+                        FocusScope.of(context).unfocus();
+                        context.read<AuthBloc>().add(AuthEvent.signIn());
+                      },
+                style: ElevatedButton.styleFrom(
+                    fixedSize: const Size(240, 45), elevation: 5),
                 child: state.status == AuthStatus.loading
                     ? const CircularProgressIndicator(strokeWidth: 2)
                     : Text(
@@ -131,6 +135,7 @@ class TextContainerWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(elevation: 5),
                   onPressed: state.status == AuthStatus.loading
                       ? null
                       : () => context
