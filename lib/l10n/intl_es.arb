@@ -119,5 +119,8 @@
     "capsTitle": "Ha ocurrido un error",
     "@capsTitle": {},
     "capsSubtitle": "El servidor parece estar caido.",
-    "@capsSubtitle": {}
+    "@capsSubtitle": {},
+    "registerExistError": "Ya existe una cuenta con ese nombre.",
+    "@registerExistError": {}
+    
 }

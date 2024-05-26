@@ -649,6 +649,16 @@ class S {
       args: [],
     );
   }
+
+  /// `An account with that name already exists.`
+  String get registerExistError {
+    return Intl.message(
+      'An account with that name already exists.',
+      name: 'registerExistError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

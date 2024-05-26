@@ -53,6 +53,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Hubo un error al conectarse al servidor."),
         "passwordError":
             MessageLookupByLibrary.simpleMessage("Minimo 6 caracteres"),
+        "registerExistError": MessageLookupByLibrary.simpleMessage(
+            "Ya existe una cuenta con ese nombre."),
         "settingsAboutSustitle":
             MessageLookupByLibrary.simpleMessage("Información"),
         "settingsAboutText1": MessageLookupByLibrary.simpleMessage(
